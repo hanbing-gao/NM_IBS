@@ -88,3 +88,9 @@ Each step of the pipeline generates outputs such as:
 
 - Core modeling algorithms adapted from [PCNtoolkit](https://github.com/amarquand/PCNtoolkit)
 - MRI IDPs assumed to be extracted from FreeSurfer and UK Biobank pipelines
+
+---
+
+## Data availability
+
+This study has been conducted using UK Biobank Resource under Application 71300. All raw data are available from the UKB (www.ukbiobank.ac.uk). The raw and processed UKB MRI data are protected and are not openly available due to data privacy laws. Assess can be obtained by applying for access (www.ukbiobank.ac.uk/enable-your-research/apply-for-access).![image](https://github.com/user-attachments/assets/b9b0a14a-8d9e-43bf-9cc8-db0ba5436483)
