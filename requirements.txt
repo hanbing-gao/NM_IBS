@@ -1,0 +1,13 @@
+numpy>=1.22
+pandas>=1.5
+scipy>=1.10
+statsmodels>=0.14
+scikit-learn>=1.0
+matplotlib>=3.7
+openpyxl>=3.1
+xlsxwriter>=3.1
+pcntoolkit==0.26
+nibabel>=5.0
+nilearn>=0.10
+seaborn>=0.12
+Pillow>=9.0
