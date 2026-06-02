@@ -284,8 +284,11 @@ def deviation_summary(out_dir, HC, patient, HC_name, patient_name):
     For each brain region:
     1. Loads Z-scores from model predictions
     2. Combines HC and patient deviations
-    3. Filters out regions with poor model fit (pRho_fdr > 0.05)
-    4. Saves separate files for HC and patient deviations
+    3. Saves separate files for HC and patient deviations
+
+    The revision analyses retain all predicted deviation scores. The model
+    evaluation metrics are saved for transparency, but no ROI is removed or
+    zeroed on the basis of pRho_fdr or other model-performance thresholds.
     """
     # Load model metrics
     Test_metrics = pd.read_csv(os.path.join(out_dir, 'blr_metrics.csv'))
@@ -303,10 +306,6 @@ def deviation_summary(out_dir, HC, patient, HC_name, patient_name):
         # Combine Z-scores
         temp_df[idp_str] = np.concatenate((z_estimate, z_predice), axis=0).squeeze()
         
-        # Set poor-fitting models to zero
-        if Test_metrics.loc[idp_num,'pRho_fdr'] > 0.05:
-            temp_df[idp_str] = 0
-            
         deviation_count = pd.concat([deviation_count, temp_df], axis=1)
 
     # Prepare patient deviations
@@ -450,9 +449,15 @@ def preprocess_data(root_dir, HC_data_nm, cov, perm, split_data=True, imput_mode
         return idp_map
 
     # Load brain region mappings
-    CT_idp_map = load_and_format_idp_map(os.path.join(root_dir, '1_document', 'aseg_2009_CT_formatted.csv'))
-    SA_idp_map = load_and_format_idp_map(os.path.join(root_dir, '1_document', 'aseg_2009_SA_formatted.csv'))
-    CV_idp_map = load_and_format_idp_map(os.path.join(root_dir, '1_document', 'aseg_2009_CV_formatted.csv'))
+    def doc_path(filename):
+        path = os.path.join(root_dir, "docs", filename)
+        if os.path.exists(path):
+            return path
+        raise FileNotFoundError(f"Could not find {filename} under docs/.")
+
+    CT_idp_map = load_and_format_idp_map(doc_path('aseg_2009_CT_formatted.csv'))
+    SA_idp_map = load_and_format_idp_map(doc_path('aseg_2009_SA_formatted.csv'))
+    CV_idp_map = load_and_format_idp_map(doc_path('aseg_2009_CV_formatted.csv'))
 
     def get_idp_list(idp_map):
         """Helper function to extract feature lists."""
